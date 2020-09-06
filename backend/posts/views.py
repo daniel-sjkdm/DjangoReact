@@ -1,29 +1,30 @@
-from django.contrib.auth.models import User
 from django.shortcuts import render
-from .serializers import AccountSerializer, AccountLoginSerialiazer, AccountRegisterSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from .models import Post
+from .serializers import PostSerializer
+from tags.models import Tag
 
 
 
-
-class AccountAPI(APIView):
+class PostsListsAPI(APIView):
     def get(self, request):
-        accounts = User.objects.all()
-        serializer = AccountSerializer(instance=accounts, many=True)
+        posts = Post.objects.all()
+        serializer = PostSerializer(posts, many=True)
         return Response(
             serializer.data,
             status=status.HTTP_200_OK
         )
 
 
-class AccountRegisterAPI(APIView):
+class PostCreateAPI(APIView):
     def post(self, request):
         print(request.data)
-        serializer = AccountRegisterSerializer(data=request.data)
+        serializer = PostSerializer(data=request.data)
+        print(serializer.is_valid())
         if serializer.is_valid():
-            serializer.save()
+            serializer.save(author=request.user)
             return Response(
                 serializer.data,
                 status=status.HTTP_201_CREATED
@@ -32,11 +33,3 @@ class AccountRegisterAPI(APIView):
             serializer.errors,
             status=status.HTTP_400_BAD_REQUEST
         )
-
-
-class AccountLoginAPI(APIView):
-    pass
-
-
-class AccountLogoutAPI(APIView):
-    pass
