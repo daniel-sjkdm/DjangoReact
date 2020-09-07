@@ -14,13 +14,11 @@ class AccountSerializer(serializers.ModelSerializer):
 
 
 
-class AccountLoginSerialiazer(serializers.ModelSerializer):
+class AccountLoginSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = [
             'username',
-            'password',
-            'email'
         ]
 
 
