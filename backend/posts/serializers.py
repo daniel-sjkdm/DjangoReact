@@ -4,6 +4,10 @@ from tags.models import Tag
 from django.db import IntegrityError
 
 
+# TODO
+# - [ ] Fix the post serializer 
+# tags field
+# create a tag on the request itself
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -11,7 +15,7 @@ class PostSerializer(serializers.ModelSerializer):
         read_only=True,
         slug_field='username'
     )
-    # tags = serializers.CharField()
+    tags_helper = serializers.CharField(required=False, read_only=True)
     class Meta:
         model = Post
         fields = [
@@ -19,17 +23,21 @@ class PostSerializer(serializers.ModelSerializer):
             'content',
             'word_count',
             'author',
-            'tags'
+            'tags',
+            'tags_helper'
         ]
-
+        depth = 1
     def validate(self, data):
         content = data.get('content')   
-        if len(content) > 500:
-            raise serializers.ValidationError
+        try:
+            content_length = len(content)
+            if len(content) > 500:
+                raise serializers.ValidationError
+        except TypeError:
+            pass
         return data
 
     def save(self, *args, **kwargs):
-        print("Trying to create the tag...")
         post = Post.objects.create(
             title=self.validated_data.get('title'),
             content=self.validated_data.get('content')
@@ -37,9 +45,8 @@ class PostSerializer(serializers.ModelSerializer):
         post.author = kwargs.get('author')
         word_count = len(self.validated_data.get('content'))
         post.word_count = word_count
-        tags = self.validated_data.get('tags').split(',')
-        print(tags)
-        for tag in tags:
+        tags_helper = self.validated_data.get('tags_helper').split(',')
+        for tag in tags_helper:
             tag = tag.lower()
             existing_tag_query = Tag.objects.filter(title__iexact=tag)
             if existing_tag_query:
@@ -49,3 +56,5 @@ class PostSerializer(serializers.ModelSerializer):
                 post.tags.create(title=tag)
         post.save()
         return post
+
+    
