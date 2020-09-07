@@ -1,0 +1,20 @@
+.post-card {
+	height: 280px;
+	border-radius: 10px;
+	margin-bottom: 30px;
+}
+
+.post-card-header {
+	text-align: center;
+	font-size: 20px;
+	background-color: #2E3440;
+}
+
+.post-card-body {
+	background-color: #2E3440;
+}
+
+
+.post-card-content {
+	color: white;
+}

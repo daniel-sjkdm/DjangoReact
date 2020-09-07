@@ -1,0 +1,9 @@
+.navigation {
+	height: 60px;
+	margin-bottom: 30px;
+	background-color: #2E3440;
+}
+
+.navigation-link {
+	color: white;
+}

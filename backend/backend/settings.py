@@ -44,12 +44,14 @@ INSTALLED_APPS = [
     'accounts',
     'tags',
     'rest_framework',
-    'django_extensions'
+    'django_extensions',
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -62,7 +64,7 @@ ROOT_URLCONF = 'backend.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [ "templates" ],
+        'DIRS': [ BASE_DIR.joinpath('frontend/build') ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -137,6 +139,12 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.BasicAuthentication'
     ],
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated'
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly'
     ]
 }
+
+# CORS
+CORS_ALLOWED_ORIGINS = [
+    'http://127.0.0.1:3000',
+    'http://localhost:3000',
+]

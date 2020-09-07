@@ -7,6 +7,10 @@ from .serializers import PostSerializer
 from tags.models import Tag
 
 
+# TODO:
+# - [ ] Add a custom permission (user must belong to CONTENT_CREATOR group)
+
+
 
 class PostsListsAPI(APIView):
     def get(self, request):

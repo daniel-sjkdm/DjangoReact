@@ -60,4 +60,7 @@ class AccountLoginAPI(APIView):
 
 
 class AccountLogoutAPI(APIView):
-    pass
+    def post(self, request):
+        username = request.data.get('username')
+        password = request.data.get('password')
+        pass
