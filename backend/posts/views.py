@@ -23,6 +23,8 @@ class PostsListsAPI(APIView):
 
 
 class PostsCreateAPI(APIView):
+    authentication_classes = []
+    permission_classes = []
     def post(self, request):
         serializer = PostSerializer(data=request.data)
         if serializer.is_valid():
@@ -38,6 +40,8 @@ class PostsCreateAPI(APIView):
 
 
 class PostsDetailAPI(APIView):
+    authentication_classes = []
+    permission_classes = []
     def get(self, request, id):
         post = get_object_or_404(Post, id=id)
         serializer = PostSerializer(post)
@@ -60,7 +64,7 @@ class PostsDetailAPI(APIView):
         )
     def delete(self, request, id):
         post = get_object_or_404(Post, id=id)
-        post.delete
+        post.delete()
         return Response(
             {
                 "message": "Post deleted successfully"

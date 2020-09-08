@@ -18,6 +18,7 @@ class AccountLoginSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = [
+            'id',
             'username',
         ]
 
