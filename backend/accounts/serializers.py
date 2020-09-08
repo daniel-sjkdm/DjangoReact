@@ -23,7 +23,7 @@ class AccountLoginSerializer(serializers.ModelSerializer):
 
 
 class AccountRegisterSerializer(serializers.ModelSerializer):
-    email = serializers.CharField(required=False) 
+    email = serializers.EmailField(required=False) 
     class Meta:
         model = User
         fields = [
