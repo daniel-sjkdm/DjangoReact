@@ -22,24 +22,16 @@ class AccountLoginSerializer(serializers.ModelSerializer):
         ]
 
 
-
-class AccountRegisterSerializer(serializers.Serializer):
-    username = serializers.CharField(max_length=50, required=True)
-    email = serializers.EmailField(required=False)
-    password = serializers.CharField(required=True)
-    confirm_password = serializers.CharField(required=True)
-
-    def validate(self, data):
-        password = data.get('password')
-        confirm_password = data.get('confirm_password')
-        if password != confirm_password:
-            raise serializers.ValidationError
-        else:
-            return data
+class AccountRegisterSerializer(serializers.ModelSerializer):
+    email = serializers.CharField(required=False) 
+    class Meta:
+        model = User
+        fields = [
+            'id',
+            'username',
+            'email',
+            'password'
+        ]
 
     def create(self, validated_data):
-        print("Second")
-        print(validated_data)
-        validated_data.pop('confirm_password', None)
-        print(validated_data)  
         return User.objects.create_user(**validated_data)
