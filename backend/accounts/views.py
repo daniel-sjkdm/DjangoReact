@@ -20,13 +20,17 @@ class AccountAPI(APIView):
 
 
 class AccountRegisterAPI(APIView):
+    permission_classes = []
+    authentication_classes = []
     def post(self, request):
-        print(request.data)
         serializer = AccountRegisterSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            user = serializer.save()
             return Response(
-                serializer.data,
+                {
+                    "user": AccountSerializer(user).data,
+                    "token": "some token here"
+                },
                 status=status.HTTP_201_CREATED
             )
         return Response(
