@@ -32,7 +32,6 @@ class PostSerializer(serializers.ModelSerializer):
             'word_count',
             'author',
             'tags',
-            'likes',
             'liked_by'
         ]
         depth = 1
