@@ -15,12 +15,16 @@ class Post(models.Model):
     word_count = models.IntegerField(default=0, blank=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="post_author", null=True)
     tags = models.ManyToManyField(Tag)
-    likes = models.IntegerField(default=0, blank=True)
     liked_by = models.ManyToManyField(User, related_name="post_user", blank=True, through=PostLike)
     timestamp = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         ordering = ['title']
+
+
+    def save(self, *args, **kwargs):
+        self.word_count = len(self.content)
+        super(Post, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.title
