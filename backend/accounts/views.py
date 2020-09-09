@@ -50,7 +50,7 @@ class AccountLoginAPI(APIView):
         username = request.data.get('username')
         password = request.data.get('password')
         user = authenticate(username=username, password=password)
-        if user:
+        if user and user.is_active:
             serializer = AccountLoginSerializer(user)
             return Response(
                 {
