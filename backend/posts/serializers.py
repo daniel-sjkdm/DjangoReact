@@ -17,6 +17,10 @@ class PostSerializer(serializers.ModelSerializer):
         read_only=True,
         slug_field='username'
     )
+    liked_by = serializers.SlugRelatedField(
+        read_only=True, 
+        slug_field='username'
+    )
     class Meta:
         model = Post
         fields = [
@@ -26,6 +30,8 @@ class PostSerializer(serializers.ModelSerializer):
             'word_count',
             'author',
             'tags',
+            'likes',
+            'liked_by'
         ]
         depth = 1
     def validate(self, data):
