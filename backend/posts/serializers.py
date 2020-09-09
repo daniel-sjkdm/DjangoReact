@@ -5,9 +5,11 @@ from django.db import IntegrityError
 
 
 # TODO
-# - [ ] Fix the post serializer 
+# - [X] Fix the post serializer 
 # tags field
 # create a tag on the request itself
+# Fixed: The tags are created on the 
+# POST request view of the post 
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -15,7 +17,6 @@ class PostSerializer(serializers.ModelSerializer):
         read_only=True,
         slug_field='username'
     )
-    tags_helper = serializers.CharField(required=False, read_only=True)
     class Meta:
         model = Post
         fields = [
@@ -25,7 +26,6 @@ class PostSerializer(serializers.ModelSerializer):
             'word_count',
             'author',
             'tags',
-            'tags_helper'
         ]
         depth = 1
     def validate(self, data):
@@ -46,15 +46,9 @@ class PostSerializer(serializers.ModelSerializer):
         post.author = kwargs.get('author')
         word_count = len(self.validated_data.get('content'))
         post.word_count = word_count
-        tags_helper = self.validated_data.get('tags_helper').split(',')
-        for tag in tags_helper:
-            tag = tag.lower()
-            existing_tag_query = Tag.objects.filter(title__iexact=tag)
-            if existing_tag_query:
-                print(existing_tag_query[0])
-                post.tags.add(existing_tag_query[0])
-            else:
-                post.tags.create(title=tag)
+        tags = kwargs.get('tags')
+        for tag in tags:
+            post.tags.add(tag)
         post.save()
         return post
 
