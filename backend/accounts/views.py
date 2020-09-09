@@ -4,9 +4,13 @@ from django.shortcuts import render
 from .serializers import AccountSerializer, AccountLoginSerializer, AccountRegisterSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework_jwt.settings import api_settings
 from rest_framework import status
 
 
+def create_token(user):
+    payload = api_settings.JWT_PAYLOAD_HANDLER(user)
+    return api_settings.JWT_ENCODE_HANDLER(payload)
 
 
 class AccountAPI(APIView):
@@ -29,7 +33,7 @@ class AccountRegisterAPI(APIView):
             return Response(
                 {
                     "user": AccountSerializer(user).data,
-                    "token": "some token here"
+                    "token": create_token(user)
                 },
                 status=status.HTTP_201_CREATED
             )
@@ -51,7 +55,7 @@ class AccountLoginAPI(APIView):
             return Response(
                 {
                     "username": serializer.data,
-                    "token": "some token here"
+                    "token": create_token(user)
                 },
                 status=status.HTTP_200_OK
             )
