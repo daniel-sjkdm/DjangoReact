@@ -145,6 +145,11 @@ REST_FRAMEWORK = {
     ]
 }
 
+# JWT 
+JWT_AUTH = {
+    'JWT_ALLOW_REFRESH': True,
+}
+
 # CORS
 CORS_ALLOWED_ORIGINS = [
     'http://127.0.0.1:3000',
