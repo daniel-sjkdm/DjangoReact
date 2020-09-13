@@ -154,3 +154,7 @@ CORS_ALLOWED_ORIGINS = [
     'http://127.0.0.1:3000',
     'http://localhost:3000',
 ]
+
+# SESSION ENGINE
+SESSION_ENGINE='django.contrib.sessions.backends.signed_cookies'
+SESSION_COOKIE_HTTPONLY=True
