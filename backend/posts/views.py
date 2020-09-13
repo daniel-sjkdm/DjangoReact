@@ -1,4 +1,6 @@
+from django.contrib.auth.models import User
 from django.shortcuts import render, get_object_or_404
+from django.db.models import Q
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -7,7 +9,7 @@ from .serializers import PostSerializer
 from tags.models import Tag
 
 # TODO:
-# - [ ] Add a custom permission (user must belong to CONTENT_CREATOR group)
+# - [X] Add a custom permission (user must belong to CONTENT_CREATOR group)
 
 
 
@@ -96,6 +98,43 @@ class PostLikeAPI(APIView):
         )
 
 
-        # http -f --auth-type=jwt  --auth="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyLCJ1c2VybmFtZSI6IlR5bGVyIiwiZXhwIjoxNTk5NjcxODExLCJlbWFpbCI6IiIsIm9yaWdfaWF0IjoxNTk5NjcxNTExfQ.b9QDFVQVE2oN1wFzeNVMZs-2ADhqZHOS7MZspDxekYk" post http://127.0.0.1:8000/api/posts/create/  title="test jwt" content="test jwt" tags="jwt, django"
+class PostsQueryAPI(APIView):
+    def get(self, request):
+        query = request.GET.get('query')
+        if query.isnumeric():
+            try:
+                post = Post.objects.get(id=int(query))
+            except:
+                return Response(
+                        [],
+                        status=status.HTTP_404_NOT_FOUND
+                )
+            serializer = PostSerializer(post)
+            return Response(
+                    [serializer.data],
+                    status=status.HTTP_200_OK
+            )
+        posts = Post.objects.filter(
+            Q(author=User.objects.filter(username__startswith=query)[0]) or
+            Q(title__startswith=query)
+        )
+        if len(posts) > 1:
+            serializer = PostSerializer(posts, many=True)        
+            return Response(
+                serializer.data,
+                status=status.HTTP_200_OK
+            )
+        elif len(posts) == 1:
+            serializer = PostSerializer(posts[0])
+            return Response(
+                [serializer.data],
+                status=status.HTTP_200_OK
+            )
+        else:
+            return Response(
+                [],
+                status=status.HTTP_404_NOT_FOUND
+            )
+       # http -f --auth-type=jwt  --auth="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyLCJ1c2VybmFtZSI6IlR5bGVyIiwiZXhwIjoxNTk5NjcxODExLCJlbWFpbCI6IiIsIm9yaWdfaWF0IjoxNTk5NjcxNTExfQ.b9QDFVQVE2oN1wFzeNVMZs-2ADhqZHOS7MZspDxekYk" post http://127.0.0.1:8000/api/posts/create/  title="test jwt" content="test jwt" tags="jwt, django"
 
 
