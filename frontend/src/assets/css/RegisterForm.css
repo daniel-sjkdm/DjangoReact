@@ -1,0 +1,12 @@
+.root {
+    background-color: white;
+}
+
+.error-message {
+    color: red;
+}
+
+.title {
+    color: white;
+    font-size: 2rem;
+}

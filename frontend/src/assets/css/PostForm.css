@@ -1,0 +1,47 @@
+/* TODO  */
+/* TODO */
+/* Fix the css elements */
+
+
+.root {
+    background-color: #434c5e;
+    border-radius: 2px;
+    border: 1px solid #5e81ac;
+    padding: 5px, 5px, 5px, 5px;
+}
+
+/* Title above the form  */
+.title {
+    text-align: center;
+    font-size: 22px;
+    color: white;
+}
+
+/* Main form element  */
+form {
+    background-color: #2e3440;
+    padding: 7px 7px 7px 7px;
+}
+
+/* Text bellow the input element  */
+.helper-text {
+    color: white;
+}
+
+/* Label text */
+.form-label {
+    color: white;
+}
+
+
+/* Fix this */
+/* Input element of the form  */
+form-control {
+    background-color: teal;
+}
+
+/* Fix this  */
+/* On focus, make the bg be the same as root element */
+.form-control:focus {
+    border: 1px solid #5e81ac;
+}
