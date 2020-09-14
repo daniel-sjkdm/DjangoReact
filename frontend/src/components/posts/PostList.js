@@ -5,10 +5,12 @@ import { Link } from 'react-router-dom';
 import { UserContext } from '../UserContext';
 import Paginator from '../Paginator';
 import { Button } from 'react-bootstrap';
+import '../../assets/css/PostList.css';
 
 
 // TODO
 // - [X] Add a paginator for the content
+// - [ ] Fix the search logic in useEffect
 
 
 const paginatorReducer = (state, action) => {
@@ -107,12 +109,12 @@ const PostList = ({searchQuery}) => {
 						/>
 					))
 				) : (
-					<h3> Not posts yet@ </h3>
+					<h2 className="no-posts"> No posts were found with the given query </h2>
 				)
 			}
 			{ 
 				state.isAuthenticated? (
-					<Link to="/post/create">
+					<Link to="/posts/create">
 						<Button variant="primary"> Create Post </Button>
 					</Link>
 				) : ""
