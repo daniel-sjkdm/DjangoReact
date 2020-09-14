@@ -1,24 +1,24 @@
-import React from 'react';
+import React, {useState, useContext} from 'react';
+import { UserContext } from '../UserContext';
+import { Redirect } from 'react-router-dom';
 import { Form, Button } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import axios from 'axios';
+import { login } from '../../services/auth';
 
 
-const registerUser = async (values) => {
-    const response = await axios({
-        url: "http://127.0.0.1:8000/api/accounts/login/",
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        data: JSON.stringify(values)
-    })
-    response.status === 200 ? console.log(response.data) : console.log("Error")
+
+const LoginForm = () => {
+
+    const [state, dispatch] = useContext(UserContext);
+
+
+    const registerUser = async (values) => {
+        const {username, password} = values;
+        login(username, password)? dispatch({"type": "LOGIN"}) : dispatch({"type": "ERROR"})
+    }
+
     
-}
-
-
-const LoginForm = (props) => {
-
 
     const formik = useFormik({
         initialValues: {
@@ -34,9 +34,11 @@ const LoginForm = (props) => {
         }
     });
 
-    return (
-        <div className="root">
+    if (!state.isAuthenticated) {
+        return (
+            <div className="root">
             <Form onSubmit={formik.handleSubmit}>
+                <p className="title"> Sign In </p>
                 <Form.Group>
                     <Form.Label htmlFor="username"> Username </Form.Label>
                     <Form.Control
@@ -62,7 +64,14 @@ const LoginForm = (props) => {
                 <Button type="submit" variant="primary"> Submit </Button>
             </Form>
         </div>
-    );
+        );
+    }
+    else {
+        return (
+          <Redirect to="/post" />  
+        );
+    }
+
 }
 
 

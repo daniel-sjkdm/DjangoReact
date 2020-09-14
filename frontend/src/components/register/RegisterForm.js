@@ -40,6 +40,7 @@ const RegisterForm = (props) => {
     return (
 		<div className="root" >
 			<Form onSubmit={formik.handleSubmit}>
+				<p className="title"> Feel free to join us! </p>
 				<Form.Group>
 					<Form.Label htmlFor="username"> Username </Form.Label>
 					<Form.Control 
@@ -82,8 +83,8 @@ const RegisterForm = (props) => {
 					/>
 					{ formik.touched.confirmPassword && formik.errors.confirmPassword? <Form.Text className="error-message"> { formik.errors.confirmPassword } </Form.Text> : "" }
 				</Form.Group>
-				<Button variant="secondary" type="submit">
-					Submit
+				<Button variant="primary" type="submit">
+					Join
 				</Button>
 			</Form>
 		</div>
